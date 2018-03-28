@@ -30,7 +30,8 @@ void make_list(void){
         rx = atom[i].x;
         ry = atom[i].y;
         for (int j = i+1; j < sys.natom; j++){
-            xij = rx - atom[j].x;
+            xij = ( rx - atom[j].x ) * box.xinv ;
+            xij = ( xij - (double)round(xij) ) * box.x ;
             yij = ry - atom[j].y;
             rij = sqrt(xij * xij + yij * yij);
             if( rij < rlist ){

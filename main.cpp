@@ -56,7 +56,7 @@ int main(void){
         }
         cal_force();
 
-        if( i > 10000 ){
+        if( i > 20000 ){
             if( (i - 20000) % 2000 == 0){
                 printf("i=%d\n", i);
                 cal_cluster_size();
@@ -65,8 +65,8 @@ int main(void){
                 FILE *fp1 = fopen(str1, "w+");
                 FILE *fp2 = fopen(str2, "w+");
                 for (int j = 0; j < sys.natom; j++){
-                    //atom[j].x -= round(atom[j].x * box.xinv) * box.x;
-                    //atom[j].y -= round(atom[j].y * box.yinv) * box.y;
+                    atom[j].x -= round(atom[j].x * box.xinv) * box.x;
+                    atom[j].y -= round(atom[j].y * box.yinv) * box.y;
                     fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\n", atom[j].x, atom[j].y, atom[j].r);
                     fprintf(fp2, "%d\t%d\n", j, cluster[j]);
                 }

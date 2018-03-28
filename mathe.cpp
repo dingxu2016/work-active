@@ -156,7 +156,8 @@ void cal_cluster_size(void){
         ry = atom[i].y;
         rr = atom[i].r;
         for (int j = i+1; j < sys.natom; j++){
-            xij = rx - atom[j].x;
+            xij = (rx - atom[j].x) * box.xinv ;
+            xij = ( xij - (double)round(xij) ) * box.x ;
             yij = ry - atom[j].y;
             rij = sqrt(xij * xij + yij * yij);
             dij = rr + atom[j].r;

@@ -24,7 +24,8 @@ void cal_force(void){
         rr = atom[i].r;
         for(int k=0; k<=countn[i]; k++) {
             j = nl[i][k];
-            xij = rx - atom[j].x;
+            xij = (rx - atom[j].x) * box.xinv ;
+            xij = ( xij - (double)round(xij) ) * box.x ;
             yij = ry - atom[j].y;
             rij = sqrt(xij * xij + yij * yij);
             dij = rr + atom[j].r;
@@ -45,14 +46,8 @@ void cal_force(void){
     
     for(int i=0; i<sys.natom; i++)
     {
-        xx1 = fabs(atom[i].x - fix_x);
-        xx2 = fabs(atom[i].x + fix_x);
         yy1 = fabs(atom[i].y - fix_y);
         yy2 = fabs(atom[i].y + fix_y);
-        if( xx1 < atom[i].r )
-            atom[i].fx -= kspring * (0.5 - xx1);
-        if( xx2 < atom[i].r )
-            atom[i].fx += kspring * (0.5 - xx2);
         if( yy1 < atom[i].r )
             atom[i].fy -= kspring * (0.5 - yy1);
         if( yy2 < atom[i].r )
