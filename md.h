@@ -3,6 +3,7 @@
 
 //#define alpha 2.0
 #define kspring 10.0
+#define kspring2 12.0
 #define mob 1.0
 
 void cal_force(void);

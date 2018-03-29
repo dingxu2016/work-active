@@ -41,6 +41,10 @@ void cal_force(void){
         }
     }
     
+    //set y-direction fix boundary
+    //给与y上下边界有接触的粒子一个shear
+    //y上边界： 向右
+    //y下边界： 向左
     fix_x = box.x / 2.0;
     fix_y = box.y / 2.0;
     
@@ -49,9 +53,15 @@ void cal_force(void){
         yy1 = fabs(atom[i].y - fix_y);
         yy2 = fabs(atom[i].y + fix_y);
         if( yy1 < atom[i].r )
+        {
             atom[i].fy -= kspring * (0.5 - yy1);
+            atom[i].fx += kspring2 * (0.5 - yy1); 
+        }
         if( yy2 < atom[i].r )
+        {
             atom[i].fy += kspring * (0.5 - yy2);
+            atom[i].fx -= kspring2 * (0.5 - yy2);
+        }
     }
 
 }

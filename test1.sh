@@ -2,9 +2,9 @@
 
 dt=0.01
 v0=0.1
-iseed=88
+iseed=75
 natom=4096
-phi=0.6
+phi=0.42
 step=200000
 
 run=/data1/dingxu/active_shear/one-fix_one-shear/build/test

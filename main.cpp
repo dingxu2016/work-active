@@ -11,7 +11,7 @@ int main(void){
     double dt, v0;
     int iseed;
     long int step;
-    char str[80], str1[80], str2[80], str3[80], s[80];
+    char str[80], str1[80], str2[80], str3[80], str4[80], s[80];
     double test_v;
 
     scanf("%le", &dt);
@@ -86,6 +86,11 @@ int main(void){
     }
     fclose(fp3);
     //printf("L=%26.16e", box.x);
+
+    sprintf(str4, "system_%.2f_%d_%d.txt", sys.phi, sys.natom, iseed);
+    FILE *fp4 = fopen(str4, "w+");
+    fprintf(fp4, "%26.16e\t%26.16e\n", box.x, box.y);
+    fclose(fp4);
 
     free(atom);
     free(old_pos);
