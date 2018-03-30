@@ -2,7 +2,7 @@
 
 dt=0.01
 v0=0.1
-iseed=75
+iseed=81
 natom=4096
 phi=0.42
 step=200000
