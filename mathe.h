@@ -13,6 +13,7 @@ extern bool   check_cal_cluster;
 
 double random_number(int iseed);
 double Gaussian_noise(double x1, double x2, int iseed);// x1 = mean  x2 = standard deviation
+double dispersity_number(int iseed);
 double array_mean(int *a, int len);        // calculate the mean of array
 void   cal_std_deviation(void);
 void   cal_cluster_size(void);

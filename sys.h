@@ -5,6 +5,7 @@
 
 typedef struct {        
     int     natom;
+    int     b_natom;
     double  phi;
     double  potential;
     double  stress;

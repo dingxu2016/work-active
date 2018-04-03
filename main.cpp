@@ -28,9 +28,10 @@ int main(void){
     gen_rand_con(iseed);
     sprintf(str, "initiation_%.2f_%d_%d.txt", sys.phi, sys.natom, iseed);
     FILE *fp = fopen(str, "w+");
-    for(int i=0; i<sys.natom; i++){
+    for(int i=0; i<sys.b_natom; i++)
+        fprintf(fp, "%26.16e\t%26.16e\t%26.16e\n", b_par[i].x, b_par[i].y, b_par[i].r);
+    for(int i=0; i<sys.natom; i++)
         fprintf(fp, "%26.16e\t%26.16e\t%26.16e\n", atom[i].x, atom[i].y, atom[i].r);
-    }
     fclose(fp);
 
     int tj = 0; //count the  times about call meke_list
@@ -56,32 +57,48 @@ int main(void){
         }
         cal_force();
 
-        if( i > 20000 ){
+        if( i > 19999 ){
             if( (i - 20000) % 2000 == 0){
                 printf("i=%d\n", i);
                 cal_cluster_size();
                 sprintf(str1, "snapshot_config_%.2f_%d_%d_%d_data.txt", sys.phi, sys.natom, iseed, i);
-                sprintf(str2, "cluster_size_%.2f_%d_%d_%d_data.txt", sys.phi, sys.natom, iseed, i);
+                //sprintf(str2, "cluster_size_%.2f_%d_%d_%d_data.txt", sys.phi, sys.natom, iseed, i);
                 FILE *fp1 = fopen(str1, "w+");
-                FILE *fp2 = fopen(str2, "w+");
+                //FILE *fp2 = fopen(str2, "w+");
+                for (int j = 0; j < sys.b_natom; j++)
+                    fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\n", b_par[j].x, b_par[j].y, b_par[j].r);
                 for (int j = 0; j < sys.natom; j++){
                     atom[j].x -= round(atom[j].x * box.xinv) * box.x;
-                    atom[j].y -= round(atom[j].y * box.yinv) * box.y;
+                    //atom[j].y -= round(atom[j].y * box.yinv) * box.y;
                     fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\n", atom[j].x, atom[j].y, atom[j].r);
-                    fprintf(fp2, "%d\t%d\n", j, cluster[j]);
+                    //fprintf(fp2, "%d\t%d\n", j, cluster[j]);
                 }
                 fclose(fp1);
-                fclose(fp2);
+                //fclose(fp2);
             }   
         }
+        //if( i >= 2 && i<=100 ){
+        //    sprintf(str1, "snapshot_config_%.2f_%d_%d_%d_data.txt", sys.phi, sys.natom, iseed, i);
+        //    FILE *fp1 = fopen(str1, "w+");
+        //    for (int j = 0; j < sys.b_natom; j++)
+        //        fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\n", b_par[j].x, b_par[j].y, b_par[j].r);
+        //    for (int j = 0; j < sys.natom; j++){
+        //        atom[j].x -= round(atom[j].x * box.xinv) * box.x;
+        //        //atom[j].y -= round(atom[j].y * box.yinv) * box.y;
+        //        fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\n", atom[j].x, atom[j].y, atom[j].r);
+        //    }
+        //    fclose(fp1);
+        //}
 
     }
     
     sprintf(str3, "final_%.2f_%d_%d.txt", sys.phi, sys.natom, iseed);
     FILE *fp3 = fopen(str3, "w+");
+    for(int i=0; i<sys.b_natom; i++)
+        fprintf(fp3, "%26.16e\t%26.16e\t%26.16e\n", b_par[i].x, b_par[i].y, b_par[i].r);
     for(int i=0; i<sys.natom; i++){
         atom[i].x -= round(atom[i].x * box.xinv) * box.x;
-        atom[i].y -= round(atom[i].y * box.yinv) * box.y;
+        //atom[i].y -= round(atom[i].y * box.yinv) * box.y;
         fprintf(fp3, "%26.16e\t%26.16e\t%26.16e\n", atom[i].x, atom[i].y, atom[i].r); 
     }
     fclose(fp3);
@@ -93,6 +110,7 @@ int main(void){
     fclose(fp4);
 
     free(atom);
+    free(b_par);
     free(old_pos);
     free(countn);
     free(nl);

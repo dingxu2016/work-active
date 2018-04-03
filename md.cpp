@@ -41,17 +41,23 @@ void cal_force(void){
         }
     }
     
-    fix_x = box.x / 2.0;
-    fix_y = box.y / 2.0;
-    
+    //体系粒子与边界粒子的相互作用
     for(int i=0; i<sys.natom; i++)
     {
-        yy1 = fabs(atom[i].y - fix_y);
-        yy2 = fabs(atom[i].y + fix_y);
-        if( yy1 < atom[i].r )
-            atom[i].fy -= kspring * (0.5 - yy1);
-        if( yy2 < atom[i].r )
-            atom[i].fy += kspring * (0.5 - yy2);
+        for(int j=0; j<sys.b_natom; j++)
+        {
+            xij = ( atom[i].x - b_par[j].x ) * box.xinv ;
+            xij = ( xij - (double)round(xij) ) * box.x ;
+            yij = atom[i].y - b_par[j].y ;
+            rij = sqrt(xij * xij + yij * yij) ;
+            dij = atom[i].r + b_par[j].r ;
+            if(rij < dij)
+            {
+                fr = kspring * (dij - rij) / rij;
+                atom[i].fx += fr * xij;
+                atom[i].fy += fr * yij;
+            }
+        }
     }
 
 }
