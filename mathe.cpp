@@ -26,6 +26,13 @@ double Gaussian_noise(double x1, double x2, int iseed)
     return n(gs);
 }
 
+double dispersity_number( int iseed )
+{
+    static std::default_random_engine dfs( iseed+100 );
+    static std::uniform_real_distribution<double> nn(0.3, 1.2);
+    return nn(dfs);
+}
+
 /*
 double Gaussian_noise(double x1, double x2){
     double s1, s2;
