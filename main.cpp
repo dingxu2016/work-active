@@ -20,6 +20,7 @@ int main(void){
     scanf("%d", &sys.natom);
     scanf("%le", &sys.phi);
     scanf("%ld", &step);
+    scanf("%le", &sys.shear_ratio);
 
     check_cal_cluster = false;
     sigma = sqrt( 2.0 * Dr );
@@ -40,6 +41,7 @@ int main(void){
     make_list();
     cal_force();
     for (int i = 0; i < step; i++){
+        boundary_move( sys.shear_ratio );
         move(v0, dt, mean, sigma, iseed);
         //test for bug
 /*        test_v = 0.0;
@@ -66,11 +68,11 @@ int main(void){
                 FILE *fp1 = fopen(str1, "w+");
                 //FILE *fp2 = fopen(str2, "w+");
                 for (int j = 0; j < sys.b_natom; j++)
-                    fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\n", b_par[j].x, b_par[j].y, b_par[j].r);
+                    fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\t%26.16e\t%26.16e\n", b_par[j].x, b_par[j].y, b_par[j].r, 0.0, 0.0);
                 for (int j = 0; j < sys.natom; j++){
                     atom[j].x -= round(atom[j].x * box.xinv) * box.x;
                     //atom[j].y -= round(atom[j].y * box.yinv) * box.y;
-                    fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\n", atom[j].x, atom[j].y, atom[j].r);
+                    fprintf(fp1, "%26.16e\t%26.16e\t%26.16e\t%26.16e\t%26.16e\n", atom[j].x, atom[j].y, atom[j].r, atom[j].vx, atom[j].vy);
                     //fprintf(fp2, "%d\t%d\n", j, cluster[j]);
                 }
                 fclose(fp1);
@@ -95,11 +97,11 @@ int main(void){
     sprintf(str3, "final_%.2f_%d_%d.txt", sys.phi, sys.natom, iseed);
     FILE *fp3 = fopen(str3, "w+");
     for(int i=0; i<sys.b_natom; i++)
-        fprintf(fp3, "%26.16e\t%26.16e\t%26.16e\n", b_par[i].x, b_par[i].y, b_par[i].r);
+        fprintf(fp3, "%26.16e\t%26.16e\t%26.16e\t%26.16e\t%26.16e\n", b_par[i].x, b_par[i].y, b_par[i].r, 0.0, 0.0);
     for(int i=0; i<sys.natom; i++){
         atom[i].x -= round(atom[i].x * box.xinv) * box.x;
         //atom[i].y -= round(atom[i].y * box.yinv) * box.y;
-        fprintf(fp3, "%26.16e\t%26.16e\t%26.16e\n", atom[i].x, atom[i].y, atom[i].r); 
+        fprintf(fp3, "%26.16e\t%26.16e\t%26.16e\t%26.16e\t%26.16e\n", atom[i].x, atom[i].y, atom[i].r, atom[i].vx, atom[i].vy); 
     }
     fclose(fp3);
     //printf("L=%26.16e", box.x);

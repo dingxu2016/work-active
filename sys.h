@@ -10,6 +10,7 @@ typedef struct {
     double  potential;
     double  stress;
     double  pressure;
+    double  shear_ratio;
 }tpsys;
 
 extern tpsys sys;

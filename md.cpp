@@ -73,3 +73,26 @@ void move(double v0, double dt, double x1, double x2, int iseed){
         atom[i].theta += Gaussian_noise(x1, x2, iseed) * dt;
     }
 }
+
+void boundary_move( double shear_velocity )
+{
+    double s_v;
+
+    s_v = shear_velocity ;
+    //添加上下边界流动条件
+    //上边界向右流动，下边界向左流动
+    //流动性：位置移动 |s_v| 的大小
+    //调整边界粒子坐标 以 达到periodic条件
+    for(int i=0; i<sys.b_natom; i++)
+    {
+        if( b_par[i].y > 0 ){
+            b_par[i].x += s_v ;
+            b_par[i].x -= (double)round( b_par[i].x / box.x ) * box.x;
+        }
+        else{
+            b_par[i].x -= s_v ;
+            b_par[i].x -= (double)round( b_par[i].x / box.x ) * box.x;
+        }
+    }
+
+}

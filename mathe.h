@@ -3,7 +3,7 @@
 
 #define PI 3.14159265359
 #define mean 0.0
-#define Dr 5e-3    //rotational diffusion rate
+#define Dr 5e-1    //rotational diffusion rate
 #include<cstdbool>
 
 extern double sigma;

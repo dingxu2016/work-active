@@ -7,5 +7,6 @@
 
 void cal_force(void);
 void move(double v0, double dt, double x1, double x2, int iseed);
+void boundary_move( double shear_velocity );
 
 #endif
